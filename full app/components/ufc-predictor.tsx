@@ -8,6 +8,48 @@ import { Button } from "@/components/ui/button"
 import type { Fighter } from "@/lib/fighters"
 import { cn } from "@/lib/utils"
 
+function generatePrediction(fighter1: Fighter, fighter2: Fighter) {
+  // Simulate prediction based on fighter records
+  const parseRecord = (record: string) => {
+    const parts = record.split("-").map(Number)
+    return { wins: parts[0], losses: parts[1], draws: parts[2] || 0 }
+  }
+
+  const r1 = parseRecord(fighter1.record)
+  const r2 = parseRecord(fighter2.record)
+
+  const winRate1 = r1.wins / (r1.wins + r1.losses + r1.draws)
+  const winRate2 = r2.wins / (r2.wins + r2.losses + r2.draws)
+
+  const total = winRate1 + winRate2
+  let prob1 = Math.round((winRate1 / total) * 100)
+  let prob2 = 100 - prob1
+
+  // Add some randomness
+  const variance = Math.floor(Math.random() * 10) - 5
+  prob1 = Math.max(20, Math.min(80, prob1 + variance))
+  prob2 = 100 - prob1
+
+  const winner = prob1 > prob2 ? fighter1.name : fighter2.name
+  const maxProb = Math.max(prob1, prob2)
+
+  let confidence: string
+  if (maxProb >= 70) confidence = "High"
+  else if (maxProb >= 55) confidence = "Medium"
+  else confidence = "Low"
+
+  const factors = ["Ground game", "Striking", "Cardio", "Experience", "Reach advantage", "Fight IQ", "Chin", "Power"]
+  const keyFactor = factors[Math.floor(Math.random() * factors.length)]
+
+  return {
+    fighter1Probability: prob1,
+    fighter2Probability: prob2,
+    winner,
+    confidence,
+    keyFactor,
+  }
+}
+
 export function UFCPredictor() {
   const [fighter1, setFighter1] = useState<Fighter | null>(null)
   const [fighter2, setFighter2] = useState<Fighter | null>(null)
@@ -21,7 +63,10 @@ export function UFCPredictor() {
 
     // Simulate API delay
     setTimeout(() => {
-      const result = await fetch(
+      const result = generatePrediction(fighter1, fighter2)
+      setPrediction(result)
+      setIsLoading(false)
+    }, 1500)
   }
 
   const handleReset = () => {
