@@ -21,10 +21,7 @@ export function UFCPredictor() {
 
     // Simulate API delay
     setTimeout(() => {
-      const result = await fetch(fighter1, fighter2)
-      setPrediction(result)
-      setIsLoading(false)
-    }, 10)
+      const result = await fetch(
   }
 
   const handleReset = () => {
