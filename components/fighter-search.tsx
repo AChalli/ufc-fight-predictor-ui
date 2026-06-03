@@ -2,17 +2,18 @@
 
 import { useState, useRef, useEffect } from "react"
 import { Search, User, ChevronDown } from "lucide-react"
-import { fighters, type Fighter } from "@/lib/fighters"
+import type { Fighter } from "@/lib/fighters"
 import { cn } from "@/lib/utils"
 
 interface FighterSearchProps {
   label: string
+  fighters: Fighter[]
   selectedFighter: Fighter | null
   onSelect: (fighter: Fighter) => void
   excludeFighterId?: string
 }
 
-export function FighterSearch({ label, selectedFighter, onSelect, excludeFighterId }: FighterSearchProps) {
+export function FighterSearch({ label, fighters, selectedFighter, onSelect, excludeFighterId }: FighterSearchProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState("")
   const containerRef = useRef<HTMLDivElement>(null)
@@ -21,9 +22,7 @@ export function FighterSearch({ label, selectedFighter, onSelect, excludeFighter
   const filteredFighters = fighters.filter(
     (fighter) =>
       fighter.id !== excludeFighterId &&
-      (fighter.name.toLowerCase().includes(search.toLowerCase()) ||
-        fighter.nickname?.toLowerCase().includes(search.toLowerCase()) ||
-        fighter.weightClass.toLowerCase().includes(search.toLowerCase()))
+      fighter.name.toLowerCase().includes(search.toLowerCase())
   )
 
   useEffect(() => {
@@ -65,7 +64,6 @@ export function FighterSearch({ label, selectedFighter, onSelect, excludeFighter
             <div>
               <p className="font-semibold text-foreground truncate">{selectedFighter.name}</p>
               <p className="text-sm text-muted-foreground truncate">
-                {selectedFighter.nickname && `"${selectedFighter.nickname}" · `}
                 {selectedFighter.record}
               </p>
             </div>
@@ -92,7 +90,9 @@ export function FighterSearch({ label, selectedFighter, onSelect, excludeFighter
             </div>
           </div>
           <div className="max-h-64 overflow-y-auto">
-            {filteredFighters.length === 0 ? (
+            {fighters.length === 0 ? (
+              <p className="p-4 text-center text-muted-foreground">Loading fighters...</p>
+            ) : filteredFighters.length === 0 ? (
               <p className="p-4 text-center text-muted-foreground">No fighters found</p>
             ) : (
               filteredFighters.map((fighter) => (
@@ -107,7 +107,7 @@ export function FighterSearch({ label, selectedFighter, onSelect, excludeFighter
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-foreground truncate">{fighter.name}</p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {fighter.weightClass} · {fighter.record} · {fighter.country}
+                      {fighter.weightClass} · {fighter.record}
                     </p>
                   </div>
                 </button>
