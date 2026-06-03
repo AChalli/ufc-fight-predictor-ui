@@ -19,10 +19,9 @@ export function UFCPredictor() {
     setIsLoading(true)
     setPrediction(null)
 
-    // Simulate API delay
-    setTimeout(() => {
-      const result = await fetch(
-  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/predict?fighter1=${fighter1.name}&fighter2=${fighter2.name}`
+)
+const data = await res.json()
 
   const handleReset = () => {
     setFighter1(null)
