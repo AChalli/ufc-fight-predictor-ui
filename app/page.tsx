@@ -65,7 +65,7 @@ export default function Home() {
       <footer className="border-t border-border py-6 mt-12">
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground">
-            Built for entertainment purposes only. Predictions are simulated and not based on actual fight data.
+            Built for entertainment purposes only.
           </p>
         </div>
       </footer>
