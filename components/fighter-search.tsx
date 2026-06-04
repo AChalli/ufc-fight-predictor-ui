@@ -95,9 +95,9 @@ export function FighterSearch({ label, fighters, selectedFighter, onSelect, excl
             ) : filteredFighters.length === 0 ? (
               <p className="p-4 text-center text-muted-foreground">No fighters found</p>
             ) : (
-              filteredFighters.map((fighter) => (
+              filteredFighters.map((fighter, index) => (
                 <button
-                  key={fighter.id}
+                  key={`${fighter.name}-${index}`}
                   onClick={() => handleSelect(fighter)}
                   className="w-full flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors text-left"
                 >
