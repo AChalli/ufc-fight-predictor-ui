@@ -1,33 +1,50 @@
-# ufc-fight-predictor-ui
+# UFC Fight Predictor UI
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A full-stack web application that predicts UFC fight outcomes using a machine learning model trained on 8,500+ historical fights.
 
-## Built with v0
+## Live Demo
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+[v0-ufc-fight-predictor-ui.vercel.app](https://v0-ufc-fight-predictor-ui.vercel.app)
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_Rmbrqp4gF1yRYQScd092TDKjVjS4)
+## How It Works
 
-## Getting Started
+Select two fighters from the searchable dropdown and hit Predict. The app calls a FastAPI backend that runs a Random Forest classifier trained on career statistics for 4,400+ UFC fighters. It returns win probabilities for each fighter based on differentials in striking volume, takedown defense, reach, and win record.
 
-First, run the development server:
+**Model accuracy: 69.5%** on held-out test data.
+
+## Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **UI:** Tailwind CSS, shadcn/ui, Radix UI
+- **Language:** TypeScript
+- **Deployment:** Vercel
+
+## Backend
+
+The prediction API is a separate FastAPI service. See [ufc-fight-predictor](https://github.com/AChalli/ufc-fight-predictor) for the backend repo.
+
+## Running Locally
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/AChalli/ufc-fight-predictor-ui.git
+cd ufc-fight-predictor-ui
+npm install
+```
+
+Create a `.env.local` file in the root:
+NEXT_PUBLIC_API_URL=http://localhost:8000
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Make sure the backend is also running locally.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Notes
 
-## Learn More
-
-To learn more, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+- Fighter statistics are career averages, not historical snapshots per fight
+- Reach advantage, commonly cited in broadcast commentary, ranked last among all model features
+- Striking volume differential (SLpM) is the strongest predictor of fight outcomes
